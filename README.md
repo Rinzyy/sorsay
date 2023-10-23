@@ -68,10 +68,6 @@ For support, questions, or conversations, join our Discord server (link coming s
 
 Sorsay is licensed under the GNU General Public License. See `LICENSE` for more information.
 
-## Funding
-
-We are currently not accepting funding, but we appreciate your interest and support.
-
 ## Acknowledgments
 [Khmer Language Resources](https://github.com/seanghay/awesome-khmer-language)
 
