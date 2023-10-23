@@ -7,10 +7,10 @@ import React, {
 	KeyboardEvent,
 } from 'react';
 import { useCaretPosition } from '../DraftFunction/GetCaretPositionDiv';
-import { fetchPredictionsDictionary } from '../../lib/RomanizedSearch';
 import CaretBox from '../DraftFunction/CaretBox';
 import { useCharacterCounter } from '../DraftFunction/charCounter';
 import { UpdateCommonlyTypeWord } from '../../lib/FirebaseFunction';
+import { fetchPredictionsDictionary } from '../../lib/DictionarySearch';
 
 // Create the main functional component
 function RomanDiv() {

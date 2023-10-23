@@ -5,15 +5,10 @@ import React, {
 	ChangeEvent,
 	KeyboardEvent,
 } from 'react';
-import {
-	compareStrings,
-	fetchPredictionsDictionary,
-	harmonizeStrings,
-	levenshteinDistanceVowels,
-} from '../../lib/RomanizedSearch';
 import CaretBox from '../DraftFunction/CaretBox';
 import { useCaretPositionTextArea } from '../DraftFunction/GetCaretPositionTextArea';
 import { UpdateCommonlyTypeWord } from '../../lib/FirebaseFunction';
+import { fetchPredictionsDictionary } from '../../lib/DictionarySearch';
 
 interface EditableValueProps {
 	defaultValue?: string;
