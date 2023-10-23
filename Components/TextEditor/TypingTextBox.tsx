@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import {
 	compareStrings,
-	fetchPredictionsDictionary,
 	harmonizeStrings,
 	levenshteinDistanceVowels,
 } from '../../lib/RomanizedSearch';
@@ -16,6 +15,7 @@ import { useCaretPositionTextArea } from '../DraftFunction/GetCaretPositionTextA
 import { UpdateCommonlyTypeWord } from '../../lib/FirebaseFunction';
 import { useDispatch, useSelector } from 'react-redux';
 import { OnChangeKhmerString } from '../../lib/slices/typingSlice';
+import { fetchPredictionsDictionary } from '../../lib/DictionarySearch';
 
 interface EditableValueProps {
 	defaultValue?: string;
