@@ -1,27 +1,55 @@
-# Next.js + Tailwind CSS Example
+# Sorsay
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+We are a team of dedicated innovators working towards transforming the digital experience for the Khmer language. Our project, Sorsay, focuses on revolutionizing Khmer communication through technology. Join us in preserving the rich heritage of the Khmer script and making it universally accessible.
 
-## Deploy your own
+## Project Overview
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+Sorsay is an initiative that enhances the Khmer typing experience, promotes the use of the language, and provides educational tools for typing practice. Our approach is data-driven, allowing for continuous improvement and refinement of our technology.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## Objectives
 
-## How to use
+- **Enhanced Khmer Typing:** Streamlining the typing process with a keyboard that converts Romanized inputs into Khmer Unicode.
+- **Promoting Language Usage:** Encouraging the digital use of Khmer language by providing user-friendly solutions.
+- **Educational Tools:** Offering a fun, interactive typing game to help users improve their Khmer typing skills.
+- **Data Improvement:** Utilizing user data to enhance our keyboard and algorithm, aiding in the development of a comprehensive Khmer dictionary.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## Technical Stack
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
+- Next.js
+- TypeScript
+- Firebase
+- Redux
+- Tailwind CSS
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+## Installation
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
+Follow the standard installation process for a Next.js project. You will need to set up your own `.env.local` for Google email contact and `gcloud.json` for Firebase. Detailed steps will be provided in the contribution guidelines.
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Contribution
+
+We encourage and welcome contributions. If you're interested in contributing, Your insights and skills could greatly help advance Sorsay.
+
+## Roadmap
+
+While the roadmap for Sorsay's future is currently under development, we are planning exciting features and improvements. Stay tuned for updates on upcoming phases, which will include enhanced educational tools, expanded dictionary, and community-driven features.
+
+## Support
+
+For support, questions, or conversations, join our Discord server (link coming soon). We're building a community of developers, users, and enthusiasts, and we'd love your input!
+
+## License
+
+Sorsay is licensed under the GNU General Public License. See `LICENSE` for more information.
+
+## Funding
+
+We are currently not accepting funding, but we appreciate your interest and support.
+
+## Acknowledgments
+
+-
+
+## Changelog
+
+- **20/10/2023** Initial release - Stay tuned for updates on new features, improvements, and fixes.
+
