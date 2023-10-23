@@ -1,5 +1,4 @@
 import React from 'react';
-import RomanDiv from '../Components/TextEditor/RomanDiv';
 import KhmerGuide from '../Components/Home/KhmerScriptTable/KhmerGuide';
 import {
 	independentVowel,
