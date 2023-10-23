@@ -23,7 +23,34 @@ Sorsay is an initiative that enhances the Khmer typing experience, promotes the 
 
 ## Installation
 
-Follow the standard installation process for a Next.js project. You will need to set up your own `.env.local` for Google email contact and `gcloud.json` for Firebase. Detailed steps will be provided in the contribution guidelines.
+###### To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/)
+
+1. Fork this repository and clone the project
+
+```bash
+  git clone https://github.com/Rinzyy/sorsay.git
+```
+
+2. Go to the project directory
+
+```bash
+  cd sorsay
+```
+
+3. Install dependencies
+
+```bash
+  npm install
+```
+4. Install .env and gloud.json
+You will need to set up your own `.env.local` for Google email contact and `gcloud.json` for Firebase.
+
+5. Start the server
+
+```bash
+  npm run dev
+```
+
 
 ## Contribution
 
