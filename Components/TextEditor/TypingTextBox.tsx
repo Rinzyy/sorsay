@@ -5,11 +5,6 @@ import React, {
 	ChangeEvent,
 	KeyboardEvent,
 } from 'react';
-import {
-	compareStrings,
-	harmonizeStrings,
-	levenshteinDistanceVowels,
-} from '../../lib/RomanizedSearch';
 import CaretBox from '../DraftFunction/CaretBox';
 import { useCaretPositionTextArea } from '../DraftFunction/GetCaretPositionTextArea';
 import { UpdateCommonlyTypeWord } from '../../lib/FirebaseFunction';

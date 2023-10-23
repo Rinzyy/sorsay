@@ -19,16 +19,16 @@ export const fetchPredictionsDictionary = (inputWord: string) => {
 
 	//private for now
 	// If the results are still less than 6, add fuzzy matching results
-	// if (cleanPredictions.length < 5) {
-	// 	const fuzzyMatches = getClosestMatchesDictionary(inputWord, weight);
+	if (cleanPredictions.length < 5) {
+		const fuzzyMatches = getClosestMatchesDictionary(inputWord, weight);
 
-	// 	// Filter out items from fuzzyMatches that are already in cleanPredictions
-	// 	fuzzyMatches.forEach(item => {
-	// 		if (!cleanPredictions.includes(item)) {
-	// 			cleanPredictions.push(item);
-	// 		}
-	// 	});
-	// }
+		// Filter out items from fuzzyMatches that are already in cleanPredictions
+		fuzzyMatches.forEach(item => {
+			if (!cleanPredictions.includes(item)) {
+				cleanPredictions.push(item);
+			}
+		});
+	}
 
 	// Ensure the results don't exceed 6
 	return cleanPredictions.slice(0, 6);

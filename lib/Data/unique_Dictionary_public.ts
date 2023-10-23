@@ -2,7 +2,7 @@ export interface IKHmerDictionary {
 	[romanized: string]: string | string[];
 }
 
-// import { khmerDictionaryPrivate } from './unique_Dictionary_private';
+import { khmerDictionaryPrivate } from './unique_Dictionary_private';
 
 export const khmerDictionaryPublic: IKHmerDictionary = {
 	k: ['ក', 'គ', '្ក', '្គ'],
@@ -2004,5 +2004,5 @@ export const khmerDictionaryPublic: IKHmerDictionary = {
 
 export const completeKhmerDictionary = {
 	...khmerDictionaryPublic,
-	// ...khmerDictionaryPrivate,
+	...khmerDictionaryPrivate,
 };
