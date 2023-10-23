@@ -21,6 +21,35 @@ Sorsay is an initiative that enhances the Khmer typing experience, promotes the 
 - Redux
 - Tailwind CSS
 
+## Roadmap
+
+While the roadmap for Sorsay's future is currently under development, we are planning exciting features and improvements. 
+Project Phases
+:white_check_mark: Phase 1: Sorsay Keyboard Web Implementation
+We've developed a dedicated website for the Sorsay keyboard, providing an intuitive platform for users to engage with our innovative typing solution.
+
+:hourglass_flowing_sand: Phase 2: Interactive Typing Game & Community Engagement
+Development of an interactive typing game to promote faster typing
+Implementation of a leaderboard to encourage competition and track progress
+Integration of achievement badges to reward user milestones
+Feature for users to submit their quotes for the typing game
+Data collection mechanism to gather user typing statistics for analysis and improvement of the tool
+:bulb: Phase 3: Comprehensive Khmer Dictionary
+Compiling a thorough dictionary for the Khmer language, incorporating romanized data for accessibility
+How to Contribute
+Whether you're a developer, a designer, a linguist, or just someone enthusiastic about our mission, there are several ways you can contribute:
+
+Development: Contribute to code, fix bugs, and implement new features. Check the issues tab for existing tasks or add new ones if you've identified a bug or enhancement not already on the list.
+
+Design: Help us improve the user interface and experience for the Sorsay keyboard and the upcoming game.
+
+Data: Assist in data collection, analysis, and management necessary for the typing game and dictionary compilation.
+
+Testing: Use the Sorsay keyboard and game, then provide feedback or report any bugs you find.
+
+Content: Contribute to the dictionary or submit inspirational quotes that others can type in the game.
+
+
 ## Installation
 
 ###### To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/)
@@ -56,9 +85,6 @@ You will need to set up your own `.env.local` for Google email contact and `gclo
 
 We encourage and welcome contributions. If you're interested in contributing, Your insights and skills could greatly help advance Sorsay.
 
-## Roadmap
-
-While the roadmap for Sorsay's future is currently under development, we are planning exciting features and improvements. Stay tuned for updates on upcoming phases, which will include enhanced educational tools, expanded dictionary, and community-driven features.
 
 ## Support
 
