@@ -41,6 +41,24 @@ export async function UpdateCommonlyTypeWord(
 
 	console.log('send to database');
 }
+export async function AddUser() {
+	// const dispatch = useDispatch();
+	try {
+		const infoRef = doc(db, 'WebsiteInfo', 'GlobalInfo');
+		await runTransaction(db, async transaction => {
+			const fuelDoc = await transaction.get(infoRef);
+			if (!fuelDoc.exists()) {
+				throw 'Document does not exist!';
+				//add create user acc merge
+			}
+
+			transaction.update(infoRef, { totalUser: increment(1) });
+		});
+	} catch (e) {
+		//error modal
+	}
+}
+
 
 export async function AddMissingWord(
 	khmerForm: string,
