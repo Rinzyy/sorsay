@@ -1,0 +1,32 @@
+@media only screen and (min-width: 1026px) {
+	.bgGrid {
+		position: absolute;
+		background-color: #ffffff;
+		opacity: 1;
+		background-image: linear-gradient(#d0d0d0 1.5px, transparent 1.5px),
+			linear-gradient(to right, #d0d0d0 1.5px, #ffffff 1.5px);
+		background-size: 50px 50px;
+		width: 401.5px;
+		height: 401.5px;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+.card {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	width: 90%;
+	height: 100%;
+	border-radius: 1rem;
+	border-color: #000000;
+	border-width: 2px;
+	-webkit-box-shadow: 3px 3px 0px 1px rgb(0, 0, 0);
+	-moz-box-shadow: 3px 3px 0px 1px rgb(0, 0, 0);
+	box-shadow: 8px 8px 0px 0px rgb(0, 0, 0);
+}
