@@ -24,7 +24,8 @@ Sorsay is an initiative that enhances the Khmer typing experience, promotes the 
 ## Roadmap
 
 While the roadmap for Sorsay's future is currently under development, we are planning exciting features and improvements. 
-Project Phases
+
+#### Project Phases
 :white_check_mark: Phase 1: Sorsay Keyboard Web Implementation
 We've developed a dedicated website for the Sorsay keyboard, providing an intuitive platform for users to engage with our innovative typing solution.
 
@@ -34,9 +35,11 @@ Implementation of a leaderboard to encourage competition and track progress
 Integration of achievement badges to reward user milestones
 Feature for users to submit their quotes for the typing game
 Data collection mechanism to gather user typing statistics for analysis and improvement of the tool
+
 :bulb: Phase 3: Comprehensive Khmer Dictionary
 Compiling a thorough dictionary for the Khmer language, incorporating romanized data for accessibility
-How to Contribute
+
+## How to Contribute
 Whether you're a developer, a designer, a linguist, or just someone enthusiastic about our mission, there are several ways you can contribute:
 
 Development: Contribute to code, fix bugs, and implement new features. Check the issues tab for existing tasks or add new ones if you've identified a bug or enhancement not already on the list.
@@ -79,12 +82,6 @@ You will need to set up your own `.env.local` for Google email contact and `gclo
 ```bash
   npm run dev
 ```
-
-
-## Contribution
-
-We encourage and welcome contributions. If you're interested in contributing, Your insights and skills could greatly help advance Sorsay.
-
 
 ## Support
 
