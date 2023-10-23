@@ -46,7 +46,7 @@ Sorsay is licensed under the GNU General Public License. See `LICENSE` for more 
 We are currently not accepting funding, but we appreciate your interest and support.
 
 ## Acknowledgments
-[Khmer Language Manipulations Resources](https://github.com/seanghay/awesome-khmer-language)
+[Khmer Language Resources](https://github.com/seanghay/awesome-khmer-language)
 
 ## Changelog
 
