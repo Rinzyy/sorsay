@@ -24,6 +24,7 @@ Sorsay is an initiative that enhances the Khmer typing experience, promotes the 
 ## Roadmap
 
 While the roadmap for Sorsay's future is currently under development, we are planning exciting features and improvements. 
+![Mind map](https://github.com/Rinzyy/sorsay/assets/80165041/13dbb9b7-1296-4ccd-b3bd-c10938af2035)
 
 #### Project Phases
 :white_check_mark: Phase 1: Sorsay Keyboard Web Implementation
@@ -38,6 +39,10 @@ Data collection mechanism to gather user typing statistics for analysis and impr
 
 :bulb: Phase 3: Comprehensive Khmer Dictionary
 Compiling a thorough dictionary for the Khmer language, incorporating romanized data for accessibility
+
+📖 Phase 4: Native Keyboard
+fully Native keyboard on all devices, starting IOS and mac.
+
 
 ## How to Contribute
 Whether you're a developer, a designer, a linguist, or just someone enthusiastic about our mission, there are several ways you can contribute:
