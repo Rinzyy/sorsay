@@ -153,20 +153,26 @@ const TextAreaTransform: React.FC<EditableValueProps> = ({
 		if (inputEvent.data) {
 			const charCode = inputEvent.data.charCodeAt(0);
 			console.log(`Char Code: ${charCode}`);
+			//psuedo code
+			//if the user press number for 1 - 6 it chose the items[0-5] respectively.
+			// serve the same function as if the
 
-			if (charCode === 32) {
+			if ((charCode >= 49 && charCode <= 54) || charCode === 32) {
 				// ASCII for Space
 				const currentText = userInput
 					.slice(startOfEditedWord, endOfEditedWord + 1)
 					.trim();
 
 				if (currentText) {
-					const replacement = items[focusedIndex] || currentText;
+					// Determine the replacement based on the character code
+					let replacementIndex = charCode === 32 ? focusedIndex : charCode - 49;
+					const replacement = items[replacementIndex] || currentText;
+
 					onReplacedWord?.(replacement);
 					resetEditedWord(replacement);
 					UpdateCommonlyTypeWord(currentText, replacement);
 
-					e.preventDefault();
+					e.preventDefault(); // Prevent the default character input action
 				}
 			}
 		}
@@ -203,10 +209,6 @@ const TextAreaTransform: React.FC<EditableValueProps> = ({
 			);
 		}
 		// } else if (e.keyCode === 32) {
-		// 	let a = levenshteinDistanceVowels('sroyon', 'srayong');
-		// 	let b = compareStrings('chello', 'pello');
-		// 	console.log(a);
-		// 	console.log(b);
 		// 	// ASCII for Space
 		// 	const currentText = userInput
 		// 		.slice(startOfEditedWord, endOfEditedWord + 1)

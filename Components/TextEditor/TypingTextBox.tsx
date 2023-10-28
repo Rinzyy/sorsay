@@ -5,6 +5,7 @@ import React, {
 	ChangeEvent,
 	KeyboardEvent,
 } from 'react';
+
 import CaretBox from '../DraftFunction/CaretBox';
 import { useCaretPositionTextArea } from '../DraftFunction/GetCaretPositionTextArea';
 import { UpdateCommonlyTypeWord } from '../../lib/FirebaseFunction';
@@ -32,7 +33,7 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 	const [endOfEditedWord, setEndOfEditedWord] = useState<number>(0);
 	const [rowCount, setRowCount] = useState<number>(getRowCount(defaultValue));
 	const [replacedWords, setReplacedWords] = useState<string[]>([]);
-	const input = useSelector(
+	const khmerStringInput = useSelector(
 		(state: any) => state.typingControl.inputKhmerString
 	);
 
@@ -70,7 +71,7 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 	const handleReplacedWord = (value: string) => {
 		// Step 2: Add the newly replaced word to the state variable
 		dispatch(OnChangeKhmerString(value));
-		console.log(input + 'reducer');
+		console.log(khmerStringInput + 'reducer');
 		// You can also perform other actions related to replaced words here if needed.
 	};
 
@@ -89,6 +90,9 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 		}
 
 		setItems(currentWord ? predictions || [] : []);
+		//update the word to in redux
+		handleReplacedWord?.(e.currentTarget.value);
+
 		setFocusedIndex(0);
 	};
 
@@ -116,7 +120,6 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 		)}${word}${userInput.substring(endOfEditedWord)}`;
 
 		setUserInput(updatedInput);
-		handleReplacedWord?.(updatedInput);
 
 		setItems([]);
 
@@ -243,7 +246,6 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 				autoCorrect="off"
 				onKeyDown={handleKeyDown}
 				onInput={handleInput}
-				// onKeyDown={handleKeyDown}
 				placeholder="Type here . . ."
 				rows={rowCount}
 				style={{ marginBottom: '20px' }}

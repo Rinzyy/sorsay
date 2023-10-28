@@ -4,70 +4,111 @@ import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import { useDispatch, useSelector } from 'react-redux';
 import TypingTextBox from '../Components/TextEditor/TypingTextBox';
+import { getRandomWords } from '../lib/typingUtils';
+import { OnChangeKhmerString } from '../lib/slices/typingSlice';
 
-const randomWords = 'ដែល ខ្ញុំ ទៅ';
+// Function to remove invisible characters (like zero-width spaces)
+const cleanString = (str: any) =>
+	str
+		.normalize('NFC')
+		.replace(/[\u200B-\u200D\uFEFF]/g, '')
+		.trim();
 
 const TypingGame = () => {
-	const [timer, setTimer] = useState(1000);
 	const [wordCount, setWordCount] = useState(0);
 	const [feedback, setFeedback] = useState('');
-	const [userInput, setUserInput] = useState('');
+	const [AmountWord, setAmountWord] = useState(5);
+	const [userTypedWord, setUserTypedWord] = useState([]);
+	const [randomWords, setRandomWords] = useState('');
 	const [finish, setFinish] = useState(false);
+	const [wpm, setWpm] = useState(0);
+	const [startTime, setStartTime] = useState<number | null>(null);
+	const [timer, setTimer] = useState(0);
 
-	// const [randomWords, setRandomWords] = useState([
-	// 	'computersec',
-	// 	'xaert',
-	// 	'flexasd',
-	// ]);
+	const dispatch = useDispatch();
 	const typingInput = useSelector(
 		(state: any) => state.typingControl.inputKhmerString
 	);
-	const dispatch = useDispatch();
-
+	useEffect(() => {
+		setRandomWords(getRandomWords(AmountWord));
+	}, [AmountWord]);
 	const calculateAccuracy = useCallback(() => {
-		// Split the user input into words, filtering out any empty strings (which can happen if there are multiple spaces between words).
-		const inputWords = userInput.trim().split(' ');
-		const randomW = randomWords.trim().split(' ');
-		let a = inputWords[1];
-		let b = randomW[1];
-		//can compare perfectly fine but not array
-		const isCorrecrt = a === b;
-		console.log('yes', a, b);
+		// Split and clean user input and random words
+		const inputWords = typingInput
+			.split(/\s+/)
+			.map((word: any) => cleanString(word));
+		const randomW = randomWords.split(/\s+/).map(word => cleanString(word));
+		setUserTypedWord(inputWords);
 		let correctCount = 0;
-
-		// Assuming that the length of inputWords and randomWords is the same, and the words are in the correct order.
-		// You may need to adjust this if your game logic is different.
-		for (let i = 0; i < randomW.length; i++) {
-			if (inputWords[i] && inputWords[i] === randomW[i]) {
+		const comparisonLength = Math.min(inputWords.length, randomW.length);
+		// Compare words from the input with the random words.
+		for (let i = 0; i < comparisonLength; i++) {
+			// iterate only within the range of the shortest array
+			if (inputWords[i] === randomW[i]) {
 				correctCount++;
+				console.log('correct word:', inputWords[i]);
+			} else {
+				console.log('missing word, expected:', randomW[i]);
 			}
 		}
-
-		// Calculate accuracy as the percentage of correct words
-		// This is optional, based on whether you want to display accuracy as a count or percentage.
-		const accuracy = (correctCount / randomWords.length) * 100;
-
-		setWordCount(correctCount); // You might want to rename this state to 'correctCount' for clarity
+		// Calculate accuracy percentage
+		const accuracy = (correctCount / randomW.length) * 100;
+		setWordCount(correctCount); // Reflecting correct words count
 		console.log(`Correct words: ${correctCount}, Accuracy: ${accuracy}%`);
 
-		// If you need to display feedback based on accuracy, you can set it here
-		if (accuracy === 100) {
-			setFeedback('Great job! Keep it up!');
-		} else if (accuracy >= 75) {
-			setFeedback('Nice work! Try to get all the words correct next time.');
-		} else {
-			setFeedback('Keep practicing to improve your accuracy.');
-		}
+		// Provide feedback based on accuracy
+		// ... rest of your feedback-related code ...
 	}, [typingInput, randomWords]);
 
 	useEffect(() => {
-		const timerId = setTimeout(() => {
-			if (timer > 0) setTimer(timer - 1);
-			else endGame();
-		}, 1000);
+		const inputWords = typingInput
+			.split(/\s+/)
+			.map((word: any) => cleanString(word));
+		const randomW = randomWords.split(/\s+/).map(word => cleanString(word));
+		if (randomW.length > 3) {
+			if (inputWords.length > randomW.length) {
+				endGame();
+			}
+		}
+	}, [typingInput]);
 
-		return () => clearTimeout(timerId);
-	}, [timer]);
+	useEffect(() => {
+		if (typingInput.length === 1 && startTime === null) {
+			setStartTime(Date.now());
+		}
+	}, [typingInput, startTime]);
+
+	useEffect(() => {
+		let timerInterval: NodeJS.Timeout | null = null;
+
+		// Start the timer once the user begins typing.
+		if (startTime) {
+			timerInterval = setInterval(() => {
+				setTimer(prevTime => prevTime + 1); // Increment the timer state every second.
+			}, 1000);
+		}
+
+		return () => {
+			if (timerInterval) {
+				clearInterval(timerInterval); // Clear the interval on component cleanup.
+			}
+		};
+	}, [startTime]);
+
+	useEffect(() => {
+		const calculateWpm = () => {
+			if (timer > 0) {
+				const timeElapsed = timer / 60; // Convert seconds to minutes.
+				const wordCount = typingInput
+					.split(' ')
+					.filter((word: any) => word !== '').length; // Filter out empty strings between spaces.
+				const newWpm = Math.floor(wordCount / timeElapsed); // Calculate words per minute.
+				setWpm(newWpm);
+			}
+		};
+
+		calculateWpm(); // Run the calculation.
+	}, [timer, typingInput]);
 
 	useEffect(() => {
 		if (typingInput) {
@@ -76,55 +117,99 @@ const TypingGame = () => {
 	}, [typingInput]);
 
 	const endGame = () => {
+		dispatch(OnChangeKhmerString(''));
 		setFinish(true);
 		setWordCount(0);
 	};
-
+	const resetGame = () => {
+		setFinish(false);
+	};
+	const restartGame = () => {
+		setFinish(false);
+		setRandomWords(getRandomWords(5));
+	};
+	const changeAmountOfWord = (wordNum: number) => {
+		setAmountWord(wordNum);
+	};
 	const displayRandomWords = () => {
-		// Display the random words and compare each random word to inputWords,
-		// apply the appropriate Tailwind CSS class for coloring.
-		return randomWords
-			.trim()
-			.split(' ')
-			.map((word, index) => {
-				// Return the word with the class applied
-				return (
-					<span key={index}>
-						{word}
-						{index < randomWords.length - 1 ? ' ' : ''}{' '}
-						{/* This ensures space between words */}
-					</span>
-				);
-			});
+		// Assuming 'typingInput' is the state where user input is stored.
+		// Using 'cleanString' function to ensure both input and random words are processed identically.
+		const inputWords = typingInput
+			.split(/\s+/)
+			.map((word: string) => cleanString(word));
+		const randomW = randomWords.split(/\s+/).map(word => cleanString(word));
+
+		// Determine the current word index based on the user's last input
+		const currentWordIndex =
+			inputWords.length <= randomW.length
+				? inputWords.length - 1
+				: randomW.length - 1;
+
+		// Now we map through the random words, compare them to the user's input, and set the color accordingly.
+		return randomW.map((word, index) => {
+			// Check if the word has been typed yet
+			const isTyped = typeof inputWords[index] !== 'undefined';
+
+			let colorClass = 'text-gray-600'; // Default color for words not compared yet
+
+			if (isTyped) {
+				const isCorrect = word === inputWords[index];
+				colorClass = isCorrect ? 'text-green-600' : 'text-red-600';
+			}
+
+			// Check if it's the current word being compared
+			if (index === currentWordIndex) {
+				colorClass = 'text-black'; // Use your specific purple color code
+			}
+			return (
+				<span
+					key={index}
+					className={colorClass}>
+					{word}
+					{index < randomW.length - 1 ? ' ' : ''}
+				</span>
+			);
+		});
 	};
-	const handleInputChange = (e: any) => {
-		setUserInput(e.target.value);
-	};
+
+	// Function to determine button styles dynamically
+	const buttonStyle = (amount: number) =>
+		`focus:outline-none ${
+			amount == AmountWord
+				? 'text-primary' // Active style (adjust as necessary)
+				: 'text-black' // Default style
+		}`;
 
 	return (
-		<div className="min-h-[90vh] flex flex-col gap-10 -mt-12 items-center justify-center">
+		<div className="relative min-h-[90vh] flex flex-col gap-10 -mt-12 items-center justify-center">
 			{/* Header */}
-			<div className="bg-DarkerGray text-gray-700 w-[70vh] font-semibold h-12 rounded-lg flex-row flex gap-2 items-center justify-evenly px-2">
+			<div className="top-[20%] bg-DarkerGray text-gray-700 w-[70vh] font-semibold h-12 rounded-lg flex-row flex gap-2 items-center justify-evenly px-2">
 				<div className="flex flex-row gap-2 items-center">
 					<p className="text-primary font-bold">Word</p>
 					<p>Quote</p>
 				</div>
 				<p>|</p>
 				<div className="flex flex-row gap-2 items-center">
-					<p className="text-primary">10</p>
-					<p>25</p>
-					<p>40</p>
+					{[10, 20, 45].map(amount => (
+						<button
+							key={amount}
+							onClick={() => changeAmountOfWord(amount)}
+							className={buttonStyle(amount)}>
+							{amount}
+						</button>
+					))}
 				</div>
 				<p>|</p>
 				<div className="flex flex-row gap-3 items-center">
 					<div className="flex flex-row gap-1 items-center">
-						- <p className="text-sm">WPM</p>
+						{wpm} - <p className="text-sm">WPM</p>
 					</div>
-					<div className="flex flex-row gap-1 items-center">
+					{/* <div className="flex flex-row gap-1 items-center">
 						<HourglassBottomIcon className="text-sm" /> {timer}
-					</div>
+					</div> */}
 					<div className="flex flex-row gap-1 items-center">
-						<SpellcheckIcon className="text-sm mt-[1px]" /> {wordCount}/10
+						<SpellcheckIcon className="text-sm mt-[1px]" />{' '}
+						{userTypedWord.length - 1}/{AmountWord}
 					</div>
 				</div>
 			</div>
@@ -155,24 +240,18 @@ const TypingGame = () => {
 					</div>
 					<div className="text-gray-600 mt-2">{feedback}</div>
 					<div>
-						<button>Next</button>
-						<button>Restart</button>
+						<button onClick={resetGame}>Next</button>
+						<button onClick={restartGame}>Restart</button>
 					</div>
 				</div>
 			) : (
 				/* Game In Progress Screen */
-				<div className="w-3/4 p-6 border-2 border-gray-400 border-dashed rounded-lg ">
+				<div className="min-w-[50%] max-w-[80%] p-6 border-2 border-gray-400 border-dashed rounded-lg ">
 					<p className="text-2xl text-black mb-4 px-2 select-none">
 						{displayRandomWords()}
 					</p>
-					<p>{typingInput}</p>
 					<TypingTextBox />
-					<input
-						type="text"
-						value={userInput}
-						onChange={handleInputChange}
-						placeholder="Type something..."
-					/>
+
 					<div className="text-gray-600 mt-2">{feedback}</div>
 				</div>
 			)}
