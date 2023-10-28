@@ -1987,6 +1987,7 @@ export const khmerDictionaryPublic: IKHmerDictionary = {
 	lveng: 'ល្វែង',
 	nuon: 'នួន',
 	phdam: 'ផ្ដាំ',
+	kampuchea:'កម្ពុជា',
 	brasapvor: 'ប្រសព្វ',
 	hmat: 'ហ្មត់',
 	konani: 'គណនី',
