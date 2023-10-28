@@ -33,7 +33,7 @@ const CaretBox: React.FC<CaretBoxProps> = ({
 			{items.map((item, index) => (
 				<div
 					key={index} // <-- Move the key prop here
-					className={`relative flex flex-row items-center rounded-md pr-2 pt-1 pb-2 pl-2  ${
+					className={`relative flex flex-row items-center rounded-md pr-2 pt-1 pb-2 pl-2 cursor-pointer  ${
 						index === focusedIndex
 							? ` text-white bg-blue-500 font-semibold`
 							: ''

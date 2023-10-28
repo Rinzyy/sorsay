@@ -69,7 +69,7 @@ const StepsSection: React.FC = () => {
 						playsInline
 						muted>
 						<source
-							src="/tutorialv3.webm"
+							src="/tutorialv4.webm"
 							type="video/webm"
 						/>
 						Your browser does not support the video tag.

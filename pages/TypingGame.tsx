@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import TypingTextBox from '../Components/TextEditor/TypingTextBox';
 import { getRandomWords } from '../lib/typingUtils';
 import { OnChangeKhmerString } from '../lib/slices/typingSlice';
-
 // Function to remove invisible characters (like zero-width spaces)
 const cleanString = (str: any) =>
 	str
@@ -17,9 +16,10 @@ const cleanString = (str: any) =>
 const TypingGame = () => {
 	const [wordCount, setWordCount] = useState(0);
 	const [feedback, setFeedback] = useState('');
-	const [AmountWord, setAmountWord] = useState(5);
+	const [AmountWord, setAmountWord] = useState(20);
 	const [userTypedWord, setUserTypedWord] = useState([]);
 	const [randomWords, setRandomWords] = useState('');
+	const [rRomanWord, setRRomanWord] = useState('');
 	const [finish, setFinish] = useState(false);
 	const [wpm, setWpm] = useState(0);
 	const [startTime, setStartTime] = useState<number | null>(null);
@@ -30,7 +30,9 @@ const TypingGame = () => {
 		(state: any) => state.typingControl.inputKhmerString
 	);
 	useEffect(() => {
-		setRandomWords(getRandomWords(AmountWord));
+		let randomWordAndKey = getRandomWords(AmountWord);
+		setRandomWords(randomWordAndKey.words.join(' '));
+		setRRomanWord(randomWordAndKey.keys.join(' '));
 	}, [AmountWord]);
 	const calculateAccuracy = useCallback(() => {
 		// Split and clean user input and random words
@@ -126,11 +128,21 @@ const TypingGame = () => {
 	};
 	const restartGame = () => {
 		setFinish(false);
-		setRandomWords(getRandomWords(5));
+		let randomWordAndKey = getRandomWords(AmountWord);
+		setRandomWords(randomWordAndKey.words.join(' '));
 	};
 	const changeAmountOfWord = (wordNum: number) => {
 		setAmountWord(wordNum);
 	};
+
+	// Function to determine button styles dynamically
+	const buttonStyle = (amount: number) =>
+		`focus:outline-none ${
+			amount == AmountWord
+				? 'text-primary' // Active style (adjust as necessary)
+				: 'text-black' // Default style
+		}`;
+
 	const displayRandomWords = () => {
 		// Assuming 'typingInput' is the state where user input is stored.
 		// Using 'cleanString' function to ensure both input and random words are processed identically.
@@ -138,6 +150,7 @@ const TypingGame = () => {
 			.split(/\s+/)
 			.map((word: string) => cleanString(word));
 		const randomW = randomWords.split(/\s+/).map(word => cleanString(word));
+		const romanW = rRomanWord.split(/\s+/).map(word => cleanString(word));
 
 		// Determine the current word index based on the user's last input
 		const currentWordIndex =
@@ -162,24 +175,19 @@ const TypingGame = () => {
 				colorClass = 'text-black'; // Use your specific purple color code
 			}
 			return (
-				<span
+				<div
 					key={index}
-					className={colorClass}>
-					{word}
-					{index < randomW.length - 1 ? ' ' : ''}
-				</span>
+					className="flex flex-col items-center">
+					<span className={colorClass}>{word}</span>
+					{romanW[index] && (
+						<span className="-mt-1 text-gray-600 text-[0.8rem]">
+							{romanW[index]}
+						</span>
+					)}
+				</div>
 			);
 		});
 	};
-
-	// Function to determine button styles dynamically
-	const buttonStyle = (amount: number) =>
-		`focus:outline-none ${
-			amount == AmountWord
-				? 'text-primary' // Active style (adjust as necessary)
-				: 'text-black' // Default style
-		}`;
-
 	return (
 		<div className="relative min-h-[90vh] flex flex-col gap-10 -mt-12 items-center justify-center">
 			{/* Header */}
@@ -247,9 +255,9 @@ const TypingGame = () => {
 			) : (
 				/* Game In Progress Screen */
 				<div className="min-w-[50%] max-w-[80%] p-6 border-2 border-gray-400 border-dashed rounded-lg ">
-					<p className="text-2xl text-black mb-4 px-2 select-none">
+					<div className=" flex flex-wrap gap-2 text-2xl">
 						{displayRandomWords()}
-					</p>
+					</div>
 					<TypingTextBox />
 
 					<div className="text-gray-600 mt-2">{feedback}</div>
