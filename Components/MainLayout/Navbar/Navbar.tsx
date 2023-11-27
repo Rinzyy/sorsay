@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Modal, Popover } from '@mui/material';
+import { Menu, MenuItem, Modal, Popover, Typography } from '@mui/material';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import LoginPage from '../../LoginPage/LoginModal';
@@ -7,11 +7,13 @@ import { GetServerSideProps } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	CloseModal,
+	CloseUsernameModal,
 	isUserLogin,
 	OpenModal,
+	OpenUsernameModal,
+	SetUsername,
 	SetUserPhoto,
 	SetUserUID,
-	ShowUserFuel,
 	userLogout,
 } from '../../../lib/slices/userSlice';
 import { signOut } from 'firebase/auth';
@@ -21,6 +23,9 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import { useRouter } from 'next/router';
 import LinkLists from '../Menu/Menu';
 import Image from 'next/image';
+import UsernameModal from '../../LoginPage/UsernameModal';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Badges from '../../Badges/Badges';
 
 const Navbar = () => {
 	const router = useRouter();
@@ -30,62 +35,45 @@ const Navbar = () => {
 	const modalHandler = useSelector(
 		(state: any) => state.userControl.userSignInModal
 	);
+	const usernameModalHandler = useSelector(
+		(state: any) => state.userControl.usernameModal
+	);
 	const handleOpen = () => {
 		dispatch(OpenModal());
 		console.log(modalHandler);
 	};
 	const handleClose = () => dispatch(CloseModal());
 	const userPhoto = useSelector((state: any) => state.userControl.userPhoto);
-	// const userFuel = useSelector((state: any) => state.userControl.userFuel);
 	const userUID = useSelector((state: any) => state.userControl.userUID);
+	const userName = useSelector((state: any) => state.userControl.username);
+	const userLogin = useSelector((state: any) => state.userControl.userLogin);
 	const [isWebView, setIsWebView] = useState(false);
 
 	const dispatch = useDispatch();
+	const handleUsernameOpen = () => dispatch(OpenUsernameModal());
+	const handleUsernameClose = () => dispatch(CloseUsernameModal());
 
 	useEffect(() => {
 		const userData = JSON.parse(localStorage.getItem('user') as string);
 		if (userData) {
 			dispatch(isUserLogin());
 			dispatch(SetUserPhoto(userData.photoURL));
-			// if (localStorage.getItem('userFuel') != null) {
-			// 	dispatch(ShowUserFuel(localStorage.getItem('userFuel')));
-			// 	// console.log('yes fuel is added to redux');
-			// }
+			dispatch(SetUsername(userData.username));
+
 			dispatch(SetUserUID(userData.uid));
+
+			if (userData.username == null) {
+				dispatch(OpenUsernameModal());
+			}
 		}
 		// console.log(userData);
-	}, [userUID]);
-
-	useEffect(() => {
-		// console.log(userUID);
-		// if (localStorage.getItem(userFuel) != null) {
-		// 	dispatch(ShowUserFuel(localStorage.getItem('userFuel')));
-		// }
-		const userData = JSON.parse(localStorage.getItem('user') as string);
-
-		//userfuel
-		// if (userData != null) {
-		// 	onSnapshot(
-		// 		doc(db, 'UsersFuel', userData.uid),
-		// 		doc => {
-		// 			console.log('Current data: ', doc.data());
-		// 			dispatch(ShowUserFuel(doc.data()?.fuel));
-		// 			localStorage.setItem('userFuel', doc.data()?.fuel);
-		// 			// setUserFuel(doc.data()?.fuel);
-		// 		},
-		// 		error => {
-		// 			console.log(error);
-		// 		}
-		// 	);
-		// }
-	}, [userUID]);
+	}, [userUID, userLogin]);
 
 	const handleSignOut = () => {
 		signOut(auth)
 			.then(() => {
-				dispatch(SetUserPhoto(null));
+				dispatch(SetUserUID(null));
 				localStorage.removeItem('user');
-				localStorage.removeItem('userFuel');
 				setAnchorEl(null);
 				dispatch(userLogout());
 
@@ -192,7 +180,7 @@ const Navbar = () => {
 							</button>
 						))}
 					</div>
-					{userPhoto == null ? (
+					{!userLogin ? (
 						<>
 							<div
 								className="cursor-pointer flex gap-2 items-center justify-center group"
@@ -209,22 +197,22 @@ const Navbar = () => {
 						<>
 							<div className="relative cursor-pointer flex gap-2 items-center justify-center group">
 								<button
-									className="flex flex-row items-center justify-center gap-2"
+									className="flex flex-row items-center justify-center gap-3"
 									onClick={handleClick}>
 									<img
 										className=" rounded-md w-8 h-8 ring-2 ring-offset-2 ring-primary group-hover:scale-110 transition-all duration-200"
-										src={userPhoto}
+										src={
+											userPhoto == 'photo' ? '/userDefaultPhoto.png' : userPhoto
+										}
 										referrerPolicy="no-referrer"
 										alt=""
 									/>
-									{/* <div className="flex items-center justify-center">
-										<WhatshotIcon className="text-sm pt-[2px]" />
-										<span className=" font-extrabold text-lg">{userFuel}</span>
-									</div> */}
+									{userName}
 								</button>
-								<Menu
-									className="absolute top-3 rounded-md p-2 w-96  "
-									id="id"
+
+								<Popover
+									id="id2"
+									className="absolute top-3 rounded-xl  overflow-visible "
 									open={anchorbool}
 									anchorEl={anchorEl}
 									onClose={HandlePopoverClose}
@@ -232,8 +220,26 @@ const Navbar = () => {
 										vertical: 'bottom',
 										horizontal: 'left',
 									}}>
-									<MenuItem onClick={handleSignOut}> Sign out</MenuItem>
-								</Menu>
+									<div className=" bg-light w-64 min-h-40 p-2 shadow-none flex flex-col items-start gap-2 justify-evenly">
+										<div className="p-2">
+											<p className=" text-gray-500 text-sm">Badges</p>
+											<div className=" mt-2">
+												<Badges />
+											</div>
+										</div>
+										{/* <div className="p-2">
+											<p className=" text-gray-500 text-sm">Profile</p>
+											<p className=" text-sm">WPM: 50</p>
+										</div> */}
+										<div className="w-full border-b-2  border-DarkerGray "></div>
+										<button
+											className=" hover:bg-gray-200 px-2 w-full rounded-md text-start py-2 flex items-center gap-2"
+											onClick={handleSignOut}>
+											<LogoutIcon />
+											Sign out
+										</button>{' '}
+									</div>
+								</Popover>
 								{/* <button onClick={handleSignOut}> Sign out</button> */}
 							</div>
 						</>
@@ -249,6 +255,18 @@ const Navbar = () => {
 					<LoginPage
 						isEmbedded={isWebView}
 						closeModal={handleClose}
+					/>
+				</div>
+			</Modal>
+			<Modal
+				open={usernameModalHandler}
+				// onClose={handleUsernameClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description">
+				<div>
+					<UsernameModal
+						isEmbedded={isWebView}
+						closeModal={handleUsernameClose}
 					/>
 				</div>
 			</Modal>

@@ -6,11 +6,10 @@ export const userSlice = createSlice({
 	initialState: {
 		userLogin: false,
 		userSignInModal: false,
-		userNoFuelModal: false,
+		usernameModal: false,
 		userPhoto: null,
 		userUID: null,
-		userFuel: 0,
-		fuelCost: 1,
+		username: '',
 		buyPlan: '',
 	},
 
@@ -27,16 +26,14 @@ export const userSlice = createSlice({
 			state.userPhoto = action.payload;
 			// console.log(state.inputString);
 		},
+		SetUsername: (state, action) => {
+			state.username = action.payload;
+			// console.log(state.inputString);
+		},
 		SetUserUID: (state, action) => {
 			state.userUID = action.payload;
 			// console.log(state.inputString);
 			// console.log(state.userUID + 'at base');
-		},
-		fuelCal: (state, action) => {
-			state.fuelCost = action.payload;
-		},
-		ShowUserFuel: (state, action) => {
-			state.userFuel = action.payload;
 		},
 		OpenModal: state => {
 			state.userSignInModal = true;
@@ -46,12 +43,12 @@ export const userSlice = createSlice({
 			state.userSignInModal = false;
 			// console.log(state.inputString);
 		},
-		OpenNoFuelModal: state => {
-			state.userNoFuelModal = true;
+		OpenUsernameModal: state => {
+			state.usernameModal = true;
 			// console.log(state.inputString);
 		},
-		CloseNoFuelModal: state => {
-			state.userNoFuelModal = false;
+		CloseUsernameModal: state => {
+			state.usernameModal = false;
 			// console.log(state.inputString);
 		},
 		setPlan: (state, action) => {
@@ -65,12 +62,11 @@ export const {
 	userLogout,
 	SetUserPhoto,
 	SetUserUID,
-	fuelCal,
-	ShowUserFuel,
+	SetUsername,
 	OpenModal,
 	CloseModal,
-	OpenNoFuelModal,
-	CloseNoFuelModal,
+	OpenUsernameModal,
+	CloseUsernameModal,
 	setPlan,
 } = userSlice.actions;
 export default userSlice.reducer;
