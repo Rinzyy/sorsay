@@ -30,6 +30,7 @@ interface Prop {
 	closeModal: React.MouseEventHandler<HTMLButtonElement>;
 	isEmbedded: boolean;
 }
+import BadWordsFilter from 'bad-words';
 
 async function updateUsernameForNewUser(uid: string, username: string) {
 	try {
@@ -79,6 +80,7 @@ const LoginPage = ({ closeModal, isEmbedded }: Prop) => {
 	const [emailSignIn, setSignInEmail] = useState<string>();
 	const [username, setUsername] = useState<string>();
 	const [forget, setForget] = useState<boolean>(false);
+	const [profanity, setProfanity] = useState<boolean>(false);
 	const dispatch = useDispatch();
 
 	const provider = new GoogleAuthProvider();
@@ -184,10 +186,18 @@ const LoginPage = ({ closeModal, isEmbedded }: Prop) => {
 		setSignInEmail(e.target.value);
 	};
 	const changeUsername = (e: any) => {
+		const Filter = new BadWordsFilter();
+		if (Filter.isProfane(e.target.value)) {
+			setProfanity(true);
+			console.log('bad word');
+		} else {
+			setProfanity(false);
+		}
 		setUsername(e.target.value);
 	};
 
-	const isFormFilled = email !== '' && password !== '' && username == '';
+	const isFormFilled =
+		email !== '' && password !== '' && username !== '' && !profanity;
 	const isFormSignInFilled = emailSignIn !== '' && passwordSigIn !== '';
 
 	return (
@@ -266,7 +276,7 @@ const LoginPage = ({ closeModal, isEmbedded }: Prop) => {
 
 						<div>
 							<button
-								className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+								className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed"
 								disabled={!isFormFilled}
 								onClick={SignUp}>
 								Sign up

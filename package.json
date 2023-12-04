@@ -15,6 +15,7 @@
 		"@next/font": "^13.1.1",
 		"@paypal/react-paypal-js": "^7.8.2",
 		"@reduxjs/toolkit": "^1.9.1",
+		"bad-words": "^3.0.4",
 		"diff": "^5.1.0",
 		"express-rate-limit": "^6.7.0",
 		"firebase": "^9.15.0",
@@ -43,6 +44,7 @@
 	},
 	"devDependencies": {
 		"@google-cloud/translate": "^7.1.0",
+		"@types/bad-words": "^3.0.3",
 		"@types/node": "18.11.3",
 		"@types/nodemailer": "^6.4.11",
 		"@types/react": "18.0.21",

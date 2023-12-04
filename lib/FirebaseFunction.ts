@@ -210,6 +210,64 @@ export async function updateUserWPM(userId: string, newWPM: number) {
 	}
 }
 
+export async function updatedBadges(userId: string, Badge: string) {
+	try {
+		// Reference to the user document
+		const userRef = doc(db, 'Users', userId);
+
+		// Check if the user exists
+		const userSnap = await getDoc(userRef);
+
+		if (!userSnap.exists()) {
+			console.error('User not found');
+			return;
+		}
+
+		// Update the badges array with the new badges (if earned)
+		const updatedBadges = {
+			Badge: true,
+			// Add more badges and their boolean values as needed
+		};
+
+		// Update the user's document with the updated badges
+		await updateDoc(userRef, {
+			badges: updatedBadges,
+		});
+
+		console.log('User badge updated successfully');
+	} catch (error) {
+		console.error('Error updating user badge:', error);
+	}
+}
+
+export async function GetBadges(userId: string) {
+	try {
+		// Reference to the user document
+		const userRef = doc(db, 'Users', userId);
+
+		// Check if the user exists
+		const userSnap = await getDoc(userRef);
+
+		if (!userSnap.exists()) {
+			console.error('User not found');
+			return [];
+		}
+
+		// Get the current badges of the user as an object
+		const badgesObject = userSnap.data()?.Badges;
+
+		// // Extract badge names (keys) where the value is true
+		// const userBadges = Object.keys(badgesObject).filter(
+		// 	badgeName => badgesObject[badgeName] === true
+		// );
+
+		return badgesObject;
+	} catch (error) {
+		console.error('Error retrieving user badges:', error);
+		return [];
+	}
+}
+
 export async function initializeBuckets() {
 	const leaderboardRef = collection(db, 'leaderboard');
 	const buckets = [
@@ -428,10 +486,15 @@ export async function checkAndUpdateLeaderboard() {
 		if (docSnap.exists() && docSnap.data().updatedAt) {
 			const lastUpdated = docSnap.data().updatedAt.toDate().getTime();
 			const currentTime = new Date().getTime();
-			const oneHour = 1000 * 60 * 60; // milliseconds in one hour
-			console.log(currentTime, lastUpdated, oneHour, currentTime - lastUpdated);
+			const fifteenminute = 1000 * 60 * 15; // milliseconds in one hour
+			console.log(
+				currentTime,
+				lastUpdated,
+				fifteenminute,
+				currentTime - lastUpdated
+			);
 			const deltaTime = currentTime - lastUpdated;
-			if (deltaTime > oneHour) {
+			if (deltaTime > fifteenminute) {
 				await updateLeaderboard();
 			} else {
 				console.log('Less than an hour since last update');

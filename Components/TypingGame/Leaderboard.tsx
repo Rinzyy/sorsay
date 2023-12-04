@@ -19,23 +19,42 @@ interface LeaderboardData {
 	topPlayers: Player[];
 	UpdateAt: number;
 }
+
 const Leaderboard: React.FC = () => {
 	// const [data, setData] = useState([]);
 
 	const [players, setPlayers] = useState<any>([]);
 	const [countDown, setCountDown] = useState<any>('00:00:00');
-	const fetchPlayers = async () => {
-		try {
-			const topPlayersData = await fetchTopPlayers();
+	const [isLoading, setIsLoading] = useState(true);
+	const [wPM, setUserWPM] = useState<any>('');
+	const [userName, setUsername] = useState<any>('');
 
-			console.log('fetch success', topPlayersData);
+	const fetchPlayers = async () => {
+		console.log('players', players);
+		const topPlayerData = localStorage.getItem('topPlayerData');
+		try {
+			const userWPM = localStorage.getItem('userWPM');
+			//if user log in
+			const storedUser = localStorage.getItem('user');
+
+			if (userWPM && storedUser) {
+				const parsedUser = JSON.parse(storedUser);
+				setUsername(parsedUser.username);
+				setUserWPM(parseInt(userWPM));
+			}
+			const topPlayersData = await fetchTopPlayers();
+			setIsLoading(false);
+			console.log('fetch success', topPlayersData.topPlayers);
 			if (topPlayersData) {
+				localStorage.setItem('topPlayerData', JSON.stringify(topPlayersData));
+
 				setPlayers(topPlayersData.topPlayers);
+
 				const lastUpdated = topPlayersData.updatedAt.toDate().getTime();
 				const currentTime = new Date().getTime();
-				const oneHour = 1000 * 60 * 60;
+				const fifteenminute = 1000 * 60 * 15;
 				const deltaTime = currentTime - lastUpdated; // Calculate time left for countdown
-				const timeLeft = oneHour - deltaTime;
+				const timeLeft = fifteenminute - deltaTime;
 
 				if (timeLeft > 0) {
 					// Calculate hours, minutes, and seconds for countdown
@@ -107,32 +126,40 @@ const Leaderboard: React.FC = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{players.map((user: any, index: number) => (
-							<tr key={user.userId}>
-								<td className="p-2 text-start">{index + 1}</td>
-								<td className="p-2 text-start w-52">{user.username}</td>
-								<td className="p-2 text-start">{user.wpm}</td>
-								<td className="p-2 text-start w-fit">
-									{user.LatestHSDate ? formatTimestamp(user.LatestHSDate) : ''}
-								</td>
-							</tr>
-						))}
-					</tbody>
-					<tbody className="p-2">
-						<tr className=" ">
-							<th className="p-2 text-start">...</th>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr>
-							<td className="p-2 text-start">1</td>
-							<td className="p-2 text-start w-52">You</td>
-							<td className="p-2 text-start">10 </td>
-							<td className="p-2 text-start">10 Jul 2023</td>
-						</tr>
+						{!isLoading
+							? players.map((user: any, index: number) => (
+									<tr
+										key={user.userId}
+										className="">
+										<td className="p-2 text-start">{index + 1}</td>
+										<td className="p-2 text-start w-52">{user.username}</td>
+										<td className="p-2 text-center">{user.wpm}</td>
+										<td className="p-2 text-start w-fit">
+											{user.LatestHSDate
+												? formatTimestamp(user.LatestHSDate)
+												: ''}
+										</td>
+									</tr>
+							  ))
+							: // Display a sample 10-row table when players data is not loaded
+							  Array.from({ length: 10 }).map((_, index) => (
+									<tr key={index}>
+										<td className="p-2 text-start">{index + 1}</td>
+										<td className="p-2 text-start w-52">...</td>
+										<td className="p-2 text-center">00</td>
+										<td className="p-2 text-start text-gray-600 w-48">
+											Loading...
+										</td>
+									</tr>
+							  ))}
 					</tbody>
 				</table>
-				<table></table>
+				<div className=" ">
+					<p className=" text-gray-600">Your WPM</p>
+					<div className=" flex flex-row items-center justify-start gap-4">
+						<p className=" font-bold text-4xl">{wPM}</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

@@ -23,7 +23,7 @@ const Header: React.FC<Props> = ({
 		<div className="top-[20%]  shadow-md border-2 border-gray-500  text-gray-700 w-[70vh] font-semibold h-12 rounded-lg flex-row flex gap-2 items-center justify-evenly px-2">
 			<div className="flex flex-row gap-2 items-center">
 				<p className="text-primary font-bold">Word</p>
-				<p>Quote</p>
+				{/* <p>Quote</p> */}
 			</div>
 			<p>|</p>
 

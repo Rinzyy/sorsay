@@ -28,24 +28,31 @@ const LinkLists = () => {
 		<div className=" pl-24 flex items-center justify-center gap-4">
 			<Link
 				href="/"
-				className="flex flex-row items-center cursor-pointer underline decoration-primary decoration-2 underline-offset-4 text-[1.1rem] text-black gap-1 hover:opacity-100 transition-all duration-300 group">
+				className={`flex flex-row items-center cursor-pointer underline ${
+					router.pathname == '/' ? ' decoration-primary' : 'decoration-gray-400'
+				} decoration-2 underline-offset-4 text-[1.1rem] text-black gap-1 hover:opacity-100 transition-all duration-300 group`}>
 				<CreateIcon className="" />
 				<span className="">{t('Draft')}</span>
 			</Link>
 			<Link
-				href=""
-				className="flex flex-row items-center underline decoration-gray-400 decoration-2 underline-offset-4 cursor-not-allowed text-black gap-1 hover:opacity-100 transition-opacity duration-300 group">
+				href="/TypingGame"
+				className={`flex flex-row items-center cursor-pointer underline ${
+					router.pathname == '/TypingGame'
+						? 'decoration-primary'
+						: 'decoration-gray-400'
+				}  decoration-2 underline-offset-4 text-[1.1rem] text-black gap-1 hover:opacity-100 transition-all duration-300 group`}>
 				<SportsEsportsIcon className=" group-hover:text-gray-700" />
 				<div className="relative flex flex-col">
 					<span className=" group-hover:text-gray-700">{t('Typing Game')}</span>
-					<span className=" absolute -bottom-3 group-hover:text-gray-700 text-[0.5rem]">
-						{t('(coming soon)')}
-					</span>
 				</div>
 			</Link>
 			<Link
 				href=""
-				className="flex flex-row items-center underline decoration-gray-400  decoration-2 underline-offset-4 cursor-not-allowed text-black gap-1 hover:opacity-100 transition-opacity duration-300 group">
+				className={`flex flex-row items-center cursor-pointer underline ${
+					router.pathname == '/Dictionary'
+						? 'decoration-primary'
+						: 'decoration-gray-400'
+				}  decoration-2 underline-offset-4 text-[1.1rem] text-black gap-1 hover:opacity-100 transition-all duration-300 group`}>
 				<MenuBookIcon className=" group-hover:text-gray-700" />
 				<div className="relative flex flex-col">
 					<span className=" group-hover:text-gray-700">{t('Dictionary')}</span>

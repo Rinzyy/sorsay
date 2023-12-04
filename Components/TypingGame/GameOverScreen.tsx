@@ -10,7 +10,6 @@ interface Props {
 	accuracy: number;
 	mistake: string[];
 	romanMistake: string[];
-	feedback: string;
 	resetGame: () => void;
 	restartGame: () => void;
 }
@@ -20,7 +19,6 @@ const GameOverScreen: React.FC<Props> = ({
 	accuracy,
 	mistake,
 	romanMistake,
-	feedback,
 	resetGame,
 	restartGame,
 }) => {

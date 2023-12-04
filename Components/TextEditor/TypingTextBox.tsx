@@ -33,6 +33,13 @@ const TypingTextBox: React.FC<EditableValueProps> = ({
 	const [endOfEditedWord, setEndOfEditedWord] = useState<number>(0);
 	const [rowCount, setRowCount] = useState<number>(getRowCount(defaultValue));
 	const [replacedWords, setReplacedWords] = useState<string[]>([]);
+	const [reloadKey, setReloadKey] = useState(0);
+
+	// Function to trigger the reload of the child component
+	const reloadChildComponent = () => {
+		setReloadKey(prevKey => prevKey + 1);
+	};
+
 	const khmerStringInput = useSelector(
 		(state: any) => state.typingControl.inputKhmerString
 	);

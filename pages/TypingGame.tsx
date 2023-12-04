@@ -22,7 +22,6 @@ import {
 import { Modal } from '@mui/material';
 
 const TypingGame: React.FC = () => {
-	const [feedback, setFeedback] = useState('');
 	const [AmountWord, setAmountWord] = useState(20);
 	const [userTypedWord, setUserTypedWord] = useState([]);
 	const [randomWords, setRandomWords] = useState('');
@@ -34,6 +33,12 @@ const TypingGame: React.FC = () => {
 	const [wpm, setWpm] = useState(0);
 	const [startTime, setStartTime] = useState<number | null>(null);
 	const [timer, setTimer] = useState(0);
+	const [reloadKey, setReloadKey] = useState(0);
+
+	// Function to trigger the reload of the child component
+	const reloadChildComponent = () => {
+		setReloadKey(prevKey => prevKey + 1);
+	};
 
 	const [leaderboardModal, setLeaderboardModal] = useState(false);
 
@@ -143,9 +148,11 @@ const TypingGame: React.FC = () => {
 	const UpdateUserWPM = () => {
 		updateMistakeCounts(mistake);
 		checkAndUpdateLeaderboard();
-		if (accuracy < 80) return;
 
+		if (accuracy < 80) return;
+		//if userWPM exist, cache to make it cost effective
 		const userWPM = localStorage.getItem('userWPM');
+		//if user log in
 		const storedUser = localStorage.getItem('user');
 		if (userWPM) {
 			if (wpm > parseInt(userWPM)) {
@@ -165,6 +172,7 @@ const TypingGame: React.FC = () => {
 			}
 		}
 	};
+
 	const endGame = () => {
 		dispatch(OnChangeKhmerString(''));
 
@@ -175,6 +183,8 @@ const TypingGame: React.FC = () => {
 
 	const resetGame = () => {
 		setFinish(false);
+		reloadChildComponent();
+		dispatch(OnChangeKhmerString(''));
 		setUserTypedWord([]);
 		setMistake([]);
 		setRomanMistake([]);
@@ -230,19 +240,24 @@ const TypingGame: React.FC = () => {
 					accuracy={accuracy}
 					mistake={mistake}
 					romanMistake={romanMistake}
-					feedback={feedback}
 					resetGame={restartGame}
 					restartGame={PlayAgain}
 				/>
 			) : (
-				<div className="min-w-[50%] max-w-[80%] p-6 border-2 border-gray-400 border-dashed rounded-lg ">
-					<WordDisplay
-						typingInput={typingInput}
-						randomWords={randomWords}
-						rRomanWord={rRomanWord}
-					/>
-					<TypingTextBox />
-					<div className="text-gray-600 mt-2">{feedback}</div>
+				<div className="min-w-[50%]  ">
+					<div className=" p-6 border-2 border-gray-400 border-dashed rounded-lg">
+						<WordDisplay
+							typingInput={typingInput}
+							randomWords={randomWords}
+							rRomanWord={rRomanWord}
+						/>
+						<TypingTextBox key={reloadKey} />
+					</div>
+					<button
+						className="w-full my-4 text-xl text-center underline underline-offset-4 hover:text-primary"
+						onClick={restartGame}>
+						Restart
+					</button>
 				</div>
 			)}
 			<Modal
@@ -253,7 +268,7 @@ const TypingGame: React.FC = () => {
 				<div>
 					<div
 						className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto h-auto
- bg-Grayesh rounded-xl md:pt-4 md:pb-10 shadow-2xl p-4">
+ bg-Grayesh rounded-xl md:pt-4 md:pb-4 shadow-2xl p-4">
 						<Leaderboard />
 					</div>
 				</div>
