@@ -25,7 +25,7 @@ const ForgetPasswordModal = ({ closeModal }: Prop) => {
 					alert(errorMessage); // Generic error message
 				}
 			});
-		closeModal();
+		closeModal;
 	};
 	return (
 		<div
