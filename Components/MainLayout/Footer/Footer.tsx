@@ -23,6 +23,10 @@ const Footer = () => {
 							</span>
 						</Link>
 						<a
+							href="/About"
+							className=" underline hover:text-primary">About Me
+						</a>
+						<a
 							href="/TOS"
 							className=" underline hover:text-primary ">
 							Term of Services
