@@ -12,6 +12,7 @@ import FeatureSection from '../Components/Home/partials/FeatureSection';
 import Landing from '../Components/MainLayout/Landing/Landing';
 import StepsSection from '../Components/Home/partials/StepSection';
 import Aboutme from '../Components/Home/partials/Aboutme';
+import Testimonials from '../Components/Home/partials/Testimonials';
 import Head from 'next/head';
 import MissingWordForm from '../Components/Home/MissingForm';
 import { NextPage } from 'next';
@@ -108,6 +109,7 @@ const Home: NextPage = () => {
 			<Landing />
 			<StepsSection />
 			<FeatureSection />
+			<Testimonials />
 			<Aboutme />
 			<CallToAction />
 			<Contribution />
